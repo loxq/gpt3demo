@@ -7,13 +7,13 @@
         font-family: monospace;
       }
       h1 {
-        background-color: #f2cc8f;
-        color: #3d405b;
+        background-color: #f28482;
+        color: #000000;
         display: inline-block;
         font-size: 2em;
         margin: 0;
         padding: 10px;
-        border: 2px solid #3d405b;
+        border: 2px solid #000000;
         border-bottom: none;
       }
       #chatbox {
@@ -30,40 +30,46 @@
       }
       #textInput {
         width: 90%;
-        border: 2px solid #3d405b;
-        border-bottom: 3px solid #3d405b;
+        border: 2px solid #000000;
+        border-bottom: 3px solid #000000;
         font-family: monospace;
         font-size: 17px;
         margin-bottom: 10px;
       }
       #textInput:focus {
         outline:none;
-        border: 2px solid #3d405b;
+        border: 2px solid #000000;
       }
       .userText {
-        color: #3d405b;
+        padding-left: 10%;
+      }
+      .userText p {
+        color: #000000;
         font-family: monospace;
         font-size: 17px;
         text-align: right;
         line-height: 30px;
         margin-top: 25px;
-        background-color: #81b29a;
-        box-shadow: 10px 10px 0px 0px #3d405b;
-        border: 2px solid #3d405b;
+        background-color: #f6bd60;
+        box-shadow: 10px 10px 0px 0px #000000;
+        border: 2px solid #000000;
         padding: 10px;
       }
       .userText span {
         padding: 10px;
       }
       .botText {
-        color: #3d405b;
+        padding-right: 10%;
+      }
+      .botText p {
+        color: #000000;
         font-family: monospace;
         font-size: 17px;
         text-align: left;
         line-height: 30px;
-        background-color: #e07a5f ;
-        box-shadow: 10px 10px 0px 0px #3d405b;
-        border: 2px solid #3d405b;
+        background-color: #84a59d ;
+        box-shadow: 10px 10px 0px 0px #000000;
+        border: 2px solid #000000;
         padding: 10px;
       }
       .botText span {
@@ -80,11 +86,11 @@
         margin-right: auto;
         width: 70%;
         margin-top: 60px;
-        border: 2px solid #3d405b;
-        background-color: #f4f1de;
+        border: 2px solid #000000;
+        background-color: #f7ede2;
       }
       .box {
-        border: 2px solid #3d405b;
+        border: 2px solid #000000;
       }
     </style>
   </head>
@@ -115,9 +121,10 @@
         }
 
         function renderMessage(msg, className) {
-          var msgHtml = document.createElement("p");
-          msgHtml.appendChild(document.createElement("span"))
-                  .appendChild(document.createTextNode(msg));
+          var msgHtml = document.createElement("div");
+          msgHtml.appendChild(document.createElement("p"))
+                 .appendChild(document.createElement("span"))
+                 .appendChild(document.createTextNode(msg));
           msgHtml.className = className;
           return msgHtml;
         }
