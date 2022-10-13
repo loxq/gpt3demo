@@ -35,7 +35,7 @@ def bot(
                 presence_penalty=pres_pen,
                 stop=[" User:", " AI:"],
             )
-            text = response['choices'][0]['text'].strip()
+            text = response["choices"][0]["text"].strip()
             print(text)
             return text
         except Exception as oops:
@@ -45,16 +45,18 @@ def bot(
             print("Error communicating with OpenAI:", oops)
             sleep(1)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
 
-@app.route('/get')
+@app.route("/")
+def home():
+    return render_template("index.html")
+
+
+@app.route("/get")
 def get_bot_response():
-    user_text = request.args.get('msg')
+    user_text = request.args.get("msg")
     botresponse = bot(prompt=user_text)
     return str(botresponse)
 
-if __name__ == '__main__':
-    app.run(debug=True)
 
+if __name__ == "__main__":
+    app.run(debug=True)

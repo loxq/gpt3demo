@@ -2,18 +2,19 @@
 <html>
   <title>ChatBot</title>
   <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style>
       body {
         font-family: monospace;
       }
       h1 {
-        background-color: #ce13c8;
+        background-color: #db72d8;
         color: black;
         display: inline-block;
         font-size: 2em;
         margin: 0;
         padding: 10px;
+        border: 2px solid #000000;
+        border-bottom: none;
       }
       #chatbox {
         margin-left: auto;
@@ -29,11 +30,15 @@
       }
       #textInput {
         width: 90%;
-        border: none;
+        border: 2px solid #000000;
         border-bottom: 3px solid black;
         font-family: monospace;
         font-size: 17px;
         margin-bottom: 10px;
+      }
+      #textInput:focus {
+        outline:none;
+        border: 2px solid #000000;
       }
       .userText {
         color: black;
@@ -41,14 +46,14 @@
         font-size: 17px;
         text-align: right;
         line-height: 30px;
-        border-radius: 5px;
         margin-top: 25px;
+        max-width: 90%;
       }
       .userText span {
         background-color: #8cfff3;
         padding: 10px;
-        border-radius: 7px;
-        box-shadow: 8px 7px 6px 5px #888888;
+        box-shadow: 10px 10px 0px 0px #000000;
+        border: 2px solid #000000;
       }
       .botText {
         color: black;
@@ -57,12 +62,12 @@
         text-align: left;
         line-height: 30px;
         background-color: #ffffff ;
-        border-radius: 7px;
-        box-shadow: 8px 7px 6px 5px #888888;
+        box-shadow: 10px 10px 0px 0px #000000;
+        border: 2px solid #000000;
+        max-width: 90%;
       }
       .botText span {
         padding: 10px;
-        border-radius: 2px;
       }
       #tidbit {
         position: absolute;
@@ -75,7 +80,7 @@
         margin-right: auto;
         width: 70%;
         margin-top: 60px;
-        border: 1px solid green;
+        border: 2px solid #000000;
         background-color: #f7f4b2;
       }
       .box {
@@ -92,40 +97,66 @@
     <div class="box"></div>
     <div class="boxed">
       <div>
-        <div id="chatbox">
-          <span><img src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png" alt = "Hello" width = "25"></span>
-          <span><p class="botText">
-            <span>Hi! I'm an AI Chatbot. Ask me anything!</span>
-          </p></span>
-        </div>
+        <div id="chatbox"></div>
         <div id="userInput">
           <input id="textInput" type="text" name="msg" placeholder="Enter message here..." />
         </div>
       </div>
       <script>
-        function getBotResponse() {
-          var image = '<img src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png" alt = "Hello" width = "25">';
-          var rawText = $("#textInput").val();
-          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
-          $("#textInput").val("");
-          $("#chatbox").append(userHtml);
-          document
-            .getElementById("userInput")
-            .scrollIntoView({ block: "start", behavior: "smooth" });
-          $.get("/get", { msg: rawText }).done(function(data) {
-            var botHtml = image+'<p class="botText"><span>' + data + "</span></p>";
-            
-            $("#chatbox").append(botHtml);
-            document
-              .getElementById("userInput")
-              .scrollIntoView({ block: "start", behavior: "smooth" });
-          });
+        var textInput = document.getElementById("textInput");
+        var chatBox = document.getElementById("chatbox");
+        
+        function getNewBotImage () {
+          var imageNode = document.createElement("img");
+          imageNode.src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png";
+          imageNode.alt = "Hello";
+          imageNode.width = "25";
+          return imageNode;
         }
-        $("#textInput").keypress(function(e) {
+
+        function renderMessage(msg, className) {
+          var msgHtml = document.createElement("p");
+          msgHtml.appendChild(document.createElement("span"))
+                  .appendChild(document.createTextNode(msg));
+          msgHtml.className = className;
+          return msgHtml;
+        }
+
+        function writeAsUser(msg) {
+          chatBox.appendChild(renderMessage(msg, "userText"));
+          scrollToBottom();
+        }
+
+        function writeAsBot(msg) {
+          chatBox.appendChild(getNewBotImage());
+          chatBox.appendChild(renderMessage(msg, "botText"));
+          scrollToBottom();
+        }
+
+        function scrollToBottom() {
+            textInput.scrollIntoView({ block: "start", behavior: "smooth" });
+        }
+
+        function talkToBot() {
+          var rawText = textInput.value;
+          textInput.value = "";
+          
+          writeAsUser(rawText);
+          
+          fetch("/get?" + new URLSearchParams({
+            msg: rawText
+          })).then(response => response.text())
+             .then(responseText => {
+                writeAsBot(responseText);
+              });
+        }
+        textInput.addEventListener('keypress', e => {
           if (e.which == 13) {
-            getBotResponse();
+            talkToBot();
           }
         });
+
+        writeAsBot("Hi! I'm an AI Chatbot. Ask me anything!");
       </script>
     </div>
   </body>
