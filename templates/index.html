@@ -42,6 +42,7 @@
       }
       .userText {
         padding-left: 10%;
+        animation: pulse .5s ease-in-out;
       }
       .userText p {
         color: #000000;
@@ -60,6 +61,7 @@
       }
       .botText {
         padding-right: 10%;
+        animation: pulse .5s ease-in-out;
       }
       .botText p {
         color: #000000;
@@ -92,6 +94,19 @@
       .box {
         border: 2px solid #000000;
       }
+      @keyframes pulse {
+        from {
+          transform: scale3d(1, 1, 1);
+        }
+
+        50% {
+          transform: scale3d(1.05, 1.05, 1.05);
+        }
+
+        to {
+          transform: scale3d(1, 1, 1);
+        }
+      }
     </style>
   </head>
   <body>
@@ -113,10 +128,11 @@
         var chatBox = document.getElementById("chatbox");
         
         function getNewBotImage () {
-          var imageNode = document.createElement("img");
-          imageNode.src = "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png";
-          imageNode.alt = "Hello";
-          imageNode.width = "25";
+          var imageNode = Object.assign(document.createElement("img"), {
+            src: "https://cdn.iconscout.com/icon/premium/png-256-thumb/ai-robot-5-1089411.png",
+            alt: "Hello",
+            width: "25"
+          });
           return imageNode;
         }
 
