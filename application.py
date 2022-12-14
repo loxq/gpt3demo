@@ -8,7 +8,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-openai.api_key = os.getenv("OPENAPI_KEY")
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
 def bot(
